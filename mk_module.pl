@@ -20,16 +20,16 @@
 
 $file = "@ARGV";
 $last_port_num = 0;
-$intent_num = 3;
+$indent_num = 3;
 $max_line_length = 62;
 
 ####################
 ##     INTENT     ##
 ####################
 $speace = " ";
-$intent = " ";
-for (my $i = 0; $i < $intent_num; $i++){
-    $intent = $intent.$speace;
+$indent = " ";
+for (my $i = 0; $i < $indent_num; $i++){
+    $indent = $indent.$speace;
 }
 
 
@@ -65,20 +65,20 @@ while (my $line=<IN>){
    if($IO eq "module"){
        print "Module name     : $pin\n";
        print OUT "module $pin (\n";
-       print OUT "$intent//INPUT\n$intent";
+       print OUT "$indent//INPUT\n$indent";
    }
 
    if($IO eq "input") {
        $input_num++;
        if ($line_length > $max_line_length){
-           print OUT "\n$intent";
+           print OUT "\n$indent";
            $line_length = 0;
        }
        print OUT "$pin,";
        $line_length = $line_length + length($pin) + 1;
    }
 };
-print OUT "\n\n$intent";
+print OUT "\n\n$indent";
 close(IN);
 close(OUT);
 
@@ -89,14 +89,14 @@ open(OUT,">>$module_file");
 open (IN, $file);
 $port_num = 0;
 $line_length = 0;
-print OUT "//OUTPUT\n$intent";
+print OUT "//OUTPUT\n$indent";
 while (my $line=<IN>){
    $port_num ++;
    my($IO,$pin,$bit) = split(/,/,$line);
    if($IO eq "output") {
        $output_num++;
        if ($line_length > $max_line_length){
-           print OUT "\n$intent";
+           print OUT "\n$indent";
            $line_length = 0;
        }
        if ($port_num == $last_port_num){
@@ -108,7 +108,7 @@ while (my $line=<IN>){
        $line_length = $line_length + length($pin) + 1;
    }
 };
-print OUT "\n$intent);\n\n";
+print OUT "\n$indent);\n\n";
 close(IN);
 close(OUT);
 
@@ -125,7 +125,7 @@ while (my $line=<IN>){
    $bit = $bit - 1 ;
    if($IO eq "input"){
        $input_num++;
-       print OUT  "$intent";
+       print OUT  "$indent";
        print OUT  "input     ";
        if ($bit eq 0){
            print OUT "            ";
@@ -143,7 +143,7 @@ while (my $line=<IN>){
    }
    if($IO eq "output"){
        $output_num++;
-       print OUT "$intent";
+       print OUT "$indent";
        print OUT "output    ";
        if ($bit eq 0){
            print OUT "           ";
